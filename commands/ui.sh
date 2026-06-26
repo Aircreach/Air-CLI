@@ -123,7 +123,7 @@ air_ui_preview() {
 fetch golang:1.22
 mount Air workspace
 compile helper
-write ui/bin/air-ui
+write ~/.air/runtime/ui/air-ui
 EOF
     ui spacer
     ui markdown <<'EOF'

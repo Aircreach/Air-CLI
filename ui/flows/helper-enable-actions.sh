@@ -5,7 +5,7 @@ helper_flow_selected_method() {
 }
 
 helper_flow_runtime_dir() {
-    printf '%s\n' "$(ui_state_home)/runtime"
+    printf '%s\n' "$(ui_runtime_home)"
 }
 
 helper_flow_local_go_root() {
@@ -72,7 +72,7 @@ helper_flow_check_helper_or_build() {
     fi
 
     ui check-item blocked "build paths" "No Go, Docker, apt/sudo, or supported local Go download path is available."
-    ui check-item hint "next step" "Install Go manually or provide an executable helper at \`$(ui_path bin/air-ui)\`, then rerun this command."
+    ui check-item hint "next step" "Install Go manually or provide an executable helper at \`$(ui_helper_path)\`, then rerun this command."
     return 1
 }
 
@@ -113,7 +113,7 @@ Command:
   bash \"$(ui_path build-helper.sh)\"
 
 Writes:
-  $(ui_path bin/air-ui)
+  $(ui_helper_path)
 
 Later commit writes:
   $(ui_settings_path)"
@@ -126,7 +126,7 @@ Image:
   golang:1.22
 
 Writes:
-  $(ui_path bin/air-ui)
+  $(ui_helper_path)
 
 Later commit writes:
   $(ui_settings_path)"
@@ -137,7 +137,7 @@ Later commit writes:
 
 Writes:
   $(helper_flow_local_go_root)
-  $(ui_path bin/air-ui)
+  $(ui_helper_path)
 
 Later commit writes:
   $(ui_settings_path)"
@@ -171,12 +171,12 @@ helper_flow_build_existing_go() {
 helper_flow_build_docker_go() {
     local image="${AIR_UI_GO_DOCKER_IMAGE:-golang:1.22}"
 
-    mkdir -p "$(ui_path bin)"
+    mkdir -p "$(dirname "$(ui_helper_path)")"
     docker run --rm \
         -v "$(ui_air_home):$(ui_air_home)" \
         -w "$(ui_path helper)" \
         "$image" \
-        sh -lc "PATH=/usr/local/go/bin:\$PATH go build -o \"$(ui_path bin/air-ui)\" ."
+        sh -lc "PATH=/usr/local/go/bin:\$PATH go build -o \"$(ui_helper_path)\" ."
 }
 
 helper_flow_download() {

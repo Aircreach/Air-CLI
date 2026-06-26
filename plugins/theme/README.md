@@ -2,6 +2,11 @@
 
 Air plugin for interactive prompt themes and renderer integration.
 
-Framework contract files live at the plugin root. Theme implementation lives in `src/`, renderer packages live in `src/renderers/`, default configuration lives in root `settings.sh`, and user state stays under `$AIR_STATE_HOME/plugins/theme`.
+Framework contract files live at the plugin root. Theme implementation lives in
+`src/`, renderer packages and theme files live in `src/renderers/`, default
+configuration lives in root `settings.sh`, user settings live under
+`$AIR_CONFIG_HOME/plugins/theme`, runtime state lives under
+`$AIR_STATE_HOME/plugins/theme`, and managed renderer binaries live under
+`$AIR_RUNTIME_HOME/plugins/theme`.
 
 Renderer startup is guarded: if the managed Starship binary is missing or stale, Air keeps the current prompt and reports the issue through `air theme renderer status` and `air plugin check theme`.

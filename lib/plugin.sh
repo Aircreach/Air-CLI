@@ -4,8 +4,24 @@ plugin_dir() {
     printf '%s\n' "$AIR_HOME/plugins/$1"
 }
 
+plugin_config_dir() {
+    printf '%s\n' "${AIR_CONFIG_HOME:-${AIR_USER_HOME:-$HOME/.air}/config}/plugins/$1"
+}
+
+plugin_state_dir() {
+    printf '%s\n' "${AIR_STATE_HOME:-${AIR_USER_HOME:-$HOME/.air}/state}/plugins/$1"
+}
+
+plugin_runtime_dir() {
+    printf '%s\n' "${AIR_RUNTIME_HOME:-${AIR_USER_HOME:-$HOME/.air}/runtime}/plugins/$1"
+}
+
+plugin_cache_dir() {
+    printf '%s\n' "${AIR_CACHE_HOME:-${AIR_USER_HOME:-$HOME/.air}/cache}/plugins/$1"
+}
+
 plugin_data_dir() {
-    printf '%s\n' "${AIR_STATE_HOME:-$AIR_HOME/state}/plugins/$1"
+    plugin_state_dir "$1"
 }
 
 plugin_meta_path() {
@@ -13,7 +29,7 @@ plugin_meta_path() {
 }
 
 plugin_settings_path() {
-    printf '%s\n' "$(plugin_data_dir "$1")/settings.sh"
+    printf '%s\n' "$(plugin_config_dir "$1")/settings.sh"
 }
 
 plugin_state_path() {
@@ -324,7 +340,7 @@ plugin_ensure_settings() {
     settings="$(plugin_settings_path "$plugin")"
     default_settings="$(plugin_default_settings_path "$plugin")"
 
-    mkdir -p "$(plugin_data_dir "$plugin")"
+    mkdir -p "$(plugin_config_dir "$plugin")"
     if [ ! -e "$settings" ] && [ -r "$default_settings" ]; then
         cp "$default_settings" "$settings"
     fi
@@ -742,8 +758,11 @@ plugin_enable() {
         plugin_setup "$plugin" || return 1
     fi
 
-    plugin_call "$plugin" enable || return 1
     enable_plugin_state "$plugin"
+    if ! plugin_call "$plugin" enable; then
+        disable_plugin_state "$plugin"
+        return 1
+    fi
 }
 
 plugin_disable() {

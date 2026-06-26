@@ -4,8 +4,24 @@ ui_state_dir() {
     ui_state_home
 }
 
+ui_config_dir() {
+    ui_config_home
+}
+
+ui_cache_dir() {
+    ui_cache_home
+}
+
+ui_runtime_dir() {
+    ui_runtime_home
+}
+
+ui_log_dir() {
+    ui_log_home
+}
+
 ui_settings_path() {
-    printf '%s\n' "$(ui_state_dir)/settings.sh"
+    printf '%s\n' "$(ui_config_dir)/settings.sh"
 }
 
 ui_load_settings() {
@@ -45,7 +61,7 @@ ui_write_settings() {
         *) mode=basic ;;
     esac
 
-    dir="$(ui_state_dir)"
+    dir="$(ui_config_dir)"
     settings="$(ui_settings_path)"
     mkdir -p "$dir"
     tmp="$(mktemp)"

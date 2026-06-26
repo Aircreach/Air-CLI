@@ -1,7 +1,7 @@
 # Starship renderer for the Air theme plugin.
 
 theme_starship_home() {
-    theme_renderer_dir starship
+    printf '%s\n' "$(plugin_runtime_dir theme)/renderers/starship"
 }
 
 theme_starship_bin() {

@@ -2,8 +2,9 @@
 
 Air UI is a native Air subsystem, not a plugin. Users configure and inspect it
 with `air ui ...`; core commands and plugins call the Bash `ui ...` API.
-Air also provides `air_home`, `air_state_home`, `ui_home`, `ui_state_home`,
-and `ui_path` as the canonical path-resolution helpers.
+Air also provides `air_home`, `air_config_home`, `air_state_home`,
+`air_runtime_home`, `ui_home`, `ui_config_home`, `ui_state_home`,
+`ui_runtime_home`, and `ui_path` as canonical path-resolution helpers.
 
 Start here:
 

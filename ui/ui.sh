@@ -10,8 +10,32 @@ ui_air_home() {
     printf '%s\n' "${AIR_HOME:-$HOME/.local/share/air}"
 }
 
+ui_user_home() {
+    if [ -n "${AIR_USER_HOME:-}" ]; then
+        printf '%s\n' "$AIR_USER_HOME"
+        return 0
+    fi
+    if declare -F air_user_home >/dev/null 2>&1; then
+        air_user_home
+        return 0
+    fi
+    printf '%s\n' "${HOME:-/root}/.air"
+}
+
 ui_home() {
     printf '%s\n' "${AIR_UI_HOME:-$(ui_air_home)/ui}"
+}
+
+ui_config_home() {
+    if [ -n "${AIR_UI_CONFIG_HOME:-}" ]; then
+        printf '%s\n' "$AIR_UI_CONFIG_HOME"
+        return 0
+    fi
+    if declare -F air_config_home >/dev/null 2>&1; then
+        printf '%s\n' "$(air_config_home)/ui"
+        return 0
+    fi
+    printf '%s\n' "${AIR_CONFIG_HOME:-$(ui_user_home)/config}/ui"
 }
 
 ui_state_home() {
@@ -23,7 +47,43 @@ ui_state_home() {
         printf '%s\n' "$(air_state_home)/ui"
         return 0
     fi
-    printf '%s\n' "${AIR_STATE_HOME:-$(ui_air_home)/state}/ui"
+    printf '%s\n' "${AIR_STATE_HOME:-$(ui_user_home)/state}/ui"
+}
+
+ui_cache_home() {
+    if [ -n "${AIR_UI_CACHE_HOME:-}" ]; then
+        printf '%s\n' "$AIR_UI_CACHE_HOME"
+        return 0
+    fi
+    if declare -F air_cache_home >/dev/null 2>&1; then
+        printf '%s\n' "$(air_cache_home)/ui"
+        return 0
+    fi
+    printf '%s\n' "${AIR_CACHE_HOME:-$(ui_user_home)/cache}/ui"
+}
+
+ui_runtime_home() {
+    if [ -n "${AIR_UI_RUNTIME_HOME:-}" ]; then
+        printf '%s\n' "$AIR_UI_RUNTIME_HOME"
+        return 0
+    fi
+    if declare -F air_runtime_home >/dev/null 2>&1; then
+        printf '%s\n' "$(air_runtime_home)/ui"
+        return 0
+    fi
+    printf '%s\n' "${AIR_RUNTIME_HOME:-$(ui_user_home)/runtime}/ui"
+}
+
+ui_log_home() {
+    if [ -n "${AIR_UI_LOG_HOME:-}" ]; then
+        printf '%s\n' "$AIR_UI_LOG_HOME"
+        return 0
+    fi
+    if declare -F air_log_home >/dev/null 2>&1; then
+        printf '%s\n' "$(air_log_home)/ui"
+        return 0
+    fi
+    printf '%s\n' "${AIR_LOG_HOME:-$(ui_user_home)/logs}/ui"
 }
 
 ui_path() {

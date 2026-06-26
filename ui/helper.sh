@@ -4,7 +4,7 @@ ui_helper_path() {
     if [ -n "${AIR_UI_HELPER:-}" ]; then
         printf '%s\n' "$AIR_UI_HELPER"
     else
-        printf '%s\n' "$(ui_path bin/air-ui)"
+        printf '%s\n' "${AIR_UI_HELPER_PATH:-$(ui_runtime_home)/air-ui}"
     fi
 }
 
@@ -31,7 +31,15 @@ ui_helper_available() {
 }
 
 ui_helper_build() {
-    bash "$(ui_path build-helper.sh)"
+    local target helper_dir
+
+    target="$(ui_helper_path)"
+    helper_dir="$(dirname "$target")"
+    mkdir -p "$helper_dir"
+    (
+        cd "$(ui_path helper)" || exit 1
+        go build -o "$target" .
+    )
 }
 
 ui_helper() {

@@ -39,6 +39,7 @@ target/
 *.dll
 *.so
 
-# Air local marker files
-state/plugins/*/enabled
-state/plugins/*/setup
+# Air generated runtime artifacts
+state/
+ui/bin/
+plugins/theme/src/renderers/*/bin/

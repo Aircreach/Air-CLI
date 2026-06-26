@@ -14,9 +14,27 @@ _air_bootstrap_home() {
 }
 
 AIR_HOME="$(_air_bootstrap_home)"
-AIR_STATE_HOME="${AIR_STATE_HOME:-$AIR_HOME/state}"
-AIR_CONFIG_HOME="${AIR_CONFIG_HOME:-$AIR_STATE_HOME}"
-export AIR_HOME AIR_STATE_HOME AIR_CONFIG_HOME
+AIR_USER_HOME="${AIR_USER_HOME:-$HOME/.air}"
+if [ "${AIR_CONFIG_HOME:-}" = "$AIR_HOME/state" ]; then
+    AIR_CONFIG_HOME="$AIR_USER_HOME/config"
+else
+    AIR_CONFIG_HOME="${AIR_CONFIG_HOME:-$AIR_USER_HOME/config}"
+fi
+if [ "${AIR_STATE_HOME:-}" = "$AIR_HOME/state" ]; then
+    AIR_STATE_HOME="$AIR_USER_HOME/state"
+else
+    AIR_STATE_HOME="${AIR_STATE_HOME:-$AIR_USER_HOME/state}"
+fi
+AIR_CACHE_HOME="${AIR_CACHE_HOME:-$AIR_USER_HOME/cache}"
+AIR_RUNTIME_HOME="${AIR_RUNTIME_HOME:-$AIR_USER_HOME/runtime}"
+AIR_LOG_HOME="${AIR_LOG_HOME:-$AIR_USER_HOME/logs}"
+export AIR_HOME AIR_USER_HOME AIR_CONFIG_HOME AIR_STATE_HOME AIR_CACHE_HOME AIR_RUNTIME_HOME AIR_LOG_HOME
+
+_air_ensure_user_dirs() {
+    mkdir -p "$AIR_USER_HOME" "$AIR_CONFIG_HOME" "$AIR_STATE_HOME" "$AIR_CACHE_HOME" "$AIR_RUNTIME_HOME" "$AIR_LOG_HOME"
+}
+
+_air_ensure_user_dirs
 
 air_home() {
     printf '%s\n' "$AIR_HOME"
@@ -26,8 +44,24 @@ air_state_home() {
     printf '%s\n' "$AIR_STATE_HOME"
 }
 
+air_user_home() {
+    printf '%s\n' "$AIR_USER_HOME"
+}
+
 air_config_home() {
     printf '%s\n' "$AIR_CONFIG_HOME"
+}
+
+air_cache_home() {
+    printf '%s\n' "$AIR_CACHE_HOME"
+}
+
+air_runtime_home() {
+    printf '%s\n' "$AIR_RUNTIME_HOME"
+}
+
+air_log_home() {
+    printf '%s\n' "$AIR_LOG_HOME"
 }
 
 _air_source_dir() {

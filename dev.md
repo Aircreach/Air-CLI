@@ -2,14 +2,22 @@
 
 ## Purpose
 
-Air is the local CLI framework for this WSL user. It centralizes personal shell tooling under:
+Air is the local CLI framework for this WSL user. Source code is under
+`AIR_HOME`; generated user data is under `AIR_USER_HOME`:
 
 ```bash
 AIR_HOME=/home/aircreach/.local/share/air
-AIR_STATE_HOME=$AIR_HOME/state
+AIR_USER_HOME=$HOME/.air
+AIR_CONFIG_HOME=$AIR_USER_HOME/config
+AIR_STATE_HOME=$AIR_USER_HOME/state
+AIR_CACHE_HOME=$AIR_USER_HOME/cache
+AIR_RUNTIME_HOME=$AIR_USER_HOME/runtime
+AIR_LOG_HOME=$AIR_USER_HOME/logs
 ```
 
-Do not introduce `~/.config/air` or scattered plugin state. Code, root plugin contract files, managed runtimes, and user state should remain inside Air unless there is a clear external runtime requirement.
+Do not introduce `~/.config/air` or scattered plugin state. Code and default
+contract files stay in `AIR_HOME`; user config, runtime state, cache, logs, and
+managed binaries stay in the `~/.air` split above.
 
 ## Core Shape
 
@@ -21,7 +29,9 @@ Main entrypoints:
 - `commands/*.sh`: core CLI commands such as `plugin`, `enable`, `disable`, `reset`, and `config`.
 - `lib/plugin.sh`: plugin protocol, lifecycle, command dispatch, runtime dispatch.
 - `plugins/<plugin>`: plugin code.
-- `state/plugins/<plugin>`: plugin state.
+- `~/.air/config/plugins/<plugin>`: user-editable plugin settings.
+- `~/.air/state/plugins/<plugin>`: runtime state and enable/setup markers.
+- `~/.air/runtime/plugins/<plugin>`: generated shell runtimes and managed binaries.
 
 Load order in `air.bash`:
 
@@ -89,7 +99,9 @@ Required conventions:
 - Lifecycle and diagnostics live at plugin root `lifecycle.sh` and expose `plugin_setup`, `plugin_enable`, `plugin_disable`, `plugin_reset`, and `plugin_status`. A plugin may also expose `plugin_preflight <purpose>` for enable/check health gates.
 - Discoverable plugin-owned things live under `src/<domain>/`, using plugin-specific manifests such as `capability.toml`, `renderer.toml`, or `*.theme.toml`.
 - Default settings live at plugin root `settings.sh`.
-- Plugin state must use `plugin_data_dir <id>` and `plugin_settings_path <id>`.
+- Plugin paths must use `plugin_config_dir`, `plugin_state_dir`,
+  `plugin_runtime_dir`, `plugin_cache_dir`, `plugin_data_dir`, and
+  `plugin_settings_path`; never write generated data into `AIR_HOME`.
 
 Keep plugin-specific logic inside the plugin. Air core should stay generic: discovery, dispatch, lifecycle, resource discovery, state paths, and shared UI helpers only.
 
@@ -101,7 +113,12 @@ Use `air plugin scaffold <id>` to create a new plugin skeleton and `air plugin c
 
 ```bash
 export AIR_HOME="${AIR_HOME:-/home/aircreach/.local/share/air}"
-export AIR_STATE_HOME="${AIR_STATE_HOME:-$AIR_HOME/state}"
+export AIR_USER_HOME="${AIR_USER_HOME:-$HOME/.air}"
+export AIR_CONFIG_HOME="${AIR_CONFIG_HOME:-$AIR_USER_HOME/config}"
+export AIR_STATE_HOME="${AIR_STATE_HOME:-$AIR_USER_HOME/state}"
+export AIR_CACHE_HOME="${AIR_CACHE_HOME:-$AIR_USER_HOME/cache}"
+export AIR_RUNTIME_HOME="${AIR_RUNTIME_HOME:-$AIR_USER_HOME/runtime}"
+export AIR_LOG_HOME="${AIR_LOG_HOME:-$AIR_USER_HOME/logs}"
 [ -r "$AIR_HOME/air.bash" ] && . "$AIR_HOME/air.bash"
 command -v air_init >/dev/null 2>&1 && air_init bash
 ```
@@ -121,7 +138,10 @@ Do not add `BASH_ENV` or `.profile` integration from core. Non-interactive Bash 
 Use:
 
 ```text
+$AIR_CONFIG_HOME/plugins/<plugin>
 $AIR_STATE_HOME/plugins/<plugin>
+$AIR_RUNTIME_HOME/plugins/<plugin>
+$AIR_CACHE_HOME/plugins/<plugin>
 ```
 
 Avoid:
@@ -129,6 +149,7 @@ Avoid:
 - `~/.config/air`
 - implicit global files
 - plugin state in plugin code directories
+- generated binaries in plugin source directories
 - empty placeholder directories unless runtime needs them immediately
 
 Backups should be created only when modifying an external user file such as `.bashrc`, not during ordinary `list` or `check` commands.

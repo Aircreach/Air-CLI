@@ -25,8 +25,10 @@ Implementation shape:
 - `ui/effects/`: explicit frame-rendered motion.
 - `ui/docs/`: documentation; component folders do not carry individual READMEs.
 - `lib/terminal.sh`: product-neutral terminal primitives.
-- `air_home`/`air_state_home`: Air framework roots.
-- `ui_home`/`ui_state_home`/`ui_path`: UI-local path resolution.
+- `air_home`/`air_config_home`/`air_state_home`/`air_runtime_home`: Air
+  framework and user-data roots.
+- `ui_home`/`ui_config_home`/`ui_state_home`/`ui_runtime_home`/`ui_path`:
+  UI-local path resolution.
 
 Fallback rules:
 
@@ -38,6 +40,8 @@ Fallback rules:
 Path rules:
 
 - Runtime code may resolve absolute paths through `ui_path`.
+- UI settings belong under `ui_config_home`.
+- Runtime helper binaries and downloaded toolchains belong under `ui_runtime_home`.
 - Persisted state should prefer logical values and paths under `ui_state_home`.
 - Avoid baking installation-specific absolute paths into generated config when a
   relative or logical reference is sufficient.

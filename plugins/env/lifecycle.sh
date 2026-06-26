@@ -3,9 +3,34 @@ plugin_setup() {
     log_success "Env plugin setup completed."
 }
 
+env_enable_builtin_if_present() {
+    local name="$1" target="$2"
+
+    env_capability_exists "$name" || env_add_builtin_capability "$name" || return 1
+    env_target_add_capability "$target" "$name" || return 1
+}
+
+env_enable_detected_builtins() {
+    env_enable_builtin_if_present local-bin bashrc || return 1
+    env_enable_builtin_if_present local-bin bash-env || return 1
+
+    if [ -d "${PYENV_ROOT:-$HOME/.pyenv}" ]; then
+        env_enable_builtin_if_present pyenv bashrc || return 1
+        env_enable_builtin_if_present pyenv bash-env || return 1
+    fi
+
+    if [ -d "${NVM_DIR:-$HOME/.nvm}" ]; then
+        env_enable_builtin_if_present nvm bashrc || return 1
+        env_enable_builtin_if_present nvm bash-env || return 1
+    fi
+}
+
 plugin_enable() {
     env_setup_files || return 1
-    log_success "Env plugin enabled. Install built-ins with 'air env add <name>', activate targets, then opt into injection with 'air env inject enable bash-env'."
+    env_enable_detected_builtins || return 1
+    env_enable_inject_target bash-env || return 1
+    env_runtime_apply_current_shell || return 1
+    log_success "Env plugin enabled. Detected runtimes were activated and loaded into this shell."
 }
 
 plugin_disable() {
@@ -14,7 +39,7 @@ plugin_disable() {
 
 plugin_reset() {
     env_remove_shell_markers || true
-    rm -rf "$(env_data_dir)"
+    rm -rf "$(plugin_config_dir env)" "$(plugin_state_dir env)" "$(plugin_runtime_dir env)" "$(plugin_cache_dir env)"
     log_success "Env plugin reset completed."
 }
 

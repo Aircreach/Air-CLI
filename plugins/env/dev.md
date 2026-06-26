@@ -21,20 +21,25 @@ plugins/env/
     capabilities/<name>/targets/bash-env.bash
 ```
 
-User state stays under:
+User data is split by purpose:
 
 ```text
-state/plugins/env/
-  enabled
-  setup
+~/.air/config/plugins/env/
   settings.sh
-  capabilities/<name>/resource.toml
-  capabilities/<name>/targets/<target>.bash
+  capabilities/<name>/params.sh
   targets/bashrc.list
   targets/bash-env.list
   inject/bash-env.enabled
-  runtime/bashrc.bash
-  runtime/bash_env.bash
+
+~/.air/state/plugins/env/
+  enabled
+  setup
+  capabilities/<name>/resource.toml
+  capabilities/<name>/targets/<target>.bash
+
+~/.air/runtime/plugins/env/
+  bashrc.bash
+  bash_env.bash
 ```
 
 Built-in capability packages live in `src/capabilities`. Installed capabilities are copied into state; runtime loads only the state copy.
@@ -64,15 +69,22 @@ targets = ["bashrc", "bash-env"]
 validate = "dir"
 ```
 
-Configured values are saved in `state/plugins/env/capabilities/<name>/params.sh`. Runtime generation uses those logical values and keeps `$HOME` relative paths portable.
+Configured values are saved in
+`$AIR_CONFIG_HOME/plugins/env/capabilities/<name>/params.sh`. Runtime generation
+uses those logical values and keeps `$HOME` relative paths portable.
 
 ## Runtime
 
 `runtime.sh` exposes `runtime_init bash`, which sources the generated `bashrc` runtime and exports `BASH_ENV` when bash-env injection is enabled.
 
-`bash-env` uses generated static runtime at `state/plugins/env/runtime/bash_env.bash`; it must not source `nvm.sh`, run `nvm use`, run `pyenv init`, load shell completion, or execute arbitrary user scripts during non-interactive startup.
+`bash-env` uses generated static runtime at
+`$AIR_RUNTIME_HOME/plugins/env/bash_env.bash`; it must not source `nvm.sh`, run
+`nvm use`, run `pyenv init`, load shell completion, or execute arbitrary user
+scripts during non-interactive startup.
 
-`bashrc` uses generated interactive runtime at `state/plugins/env/runtime/bashrc.bash`; built-in `nvm` and `pyenv` use fast PATH injection plus lazy shell functions for full initialization.
+`bashrc` uses generated interactive runtime at
+`$AIR_RUNTIME_HOME/plugins/env/bashrc.bash`; built-in `nvm` and `pyenv` use fast
+PATH injection plus lazy shell functions for full initialization.
 
 ## Commands
 

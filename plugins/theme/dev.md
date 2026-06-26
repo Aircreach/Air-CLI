@@ -22,19 +22,23 @@ plugins/theme/
     lib/prompt.sh
     renderers/starship/renderer.toml
     renderers/starship/renderer.sh
-    renderers/starship/bin/starship
     renderers/starship/themes/*.theme.toml
     renderers/starship/themes/*.toml
 ```
 
-User state stays under:
+User data is split by purpose:
 
 ```text
-state/plugins/theme/
+~/.air/config/plugins/theme/
+  settings.sh
+
+~/.air/state/plugins/theme/
   enabled
   setup
-  settings.sh
   state.sh
+
+~/.air/runtime/plugins/theme/
+  renderers/starship/bin/starship
 ```
 
 ## Dynamic Model
