@@ -1,0 +1,7 @@
+schema = "air.resource/v1"
+id = "starship"
+name = "Starship"
+summary = "Starship prompt renderer"
+loader = "renderer.sh"
+risk = "medium"
+actions = ["status", "install", "update", "ensure", "reset"]

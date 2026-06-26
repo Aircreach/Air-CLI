@@ -1,0 +1,71 @@
+title = "air env - 管理 shell 环境能力"
+summary = "Manage shell environment capabilities."
+
+[[commands]]
+name = "list"
+usage = "air env list"
+summary = "列出已注册能力和目标。"
+handler = "env_cmd_list"
+aliases = ["current"]
+
+[[commands]]
+name = "add"
+usage = "air env add <local-bin|nvm|pyenv>"
+summary = "从内置能力模板安装能力。"
+handler = "env_cmd_add"
+
+[[commands]]
+name = "register"
+usage = "air env register <name> <script>"
+summary = "注册自定义能力脚本。"
+handler = "env_cmd_register"
+
+[[commands]]
+name = "unregister"
+usage = "air env unregister <name>"
+summary = "删除能力注册并从所有目标移除。"
+handler = "env_cmd_unregister"
+
+[[commands]]
+name = "validate"
+usage = "air env validate <name> [bashrc|bash-env]"
+summary = "检查能力能否安全加载到目标。"
+handler = "env_cmd_validate"
+
+[[commands]]
+name = "activate"
+usage = "air env activate <name> <bashrc|bash-env> [--set key=value] [dynamic flags]"
+summary = "配置参数并将能力加入目标加载集合。"
+handler = "env_cmd_activate"
+aliases = ["use"]
+
+[[commands]]
+name = "configure"
+usage = "air env configure <name> [--target bashrc|bash-env] [--set key=value] [dynamic flags]"
+summary = "配置能力参数并刷新已激活 runtime。"
+handler = "env_cmd_configure"
+
+[[commands]]
+name = "deactivate"
+usage = "air env deactivate <name> <bashrc|bash-env>"
+summary = "从目标加载集合移除能力。"
+handler = "env_cmd_deactivate"
+
+[[commands]]
+name = "refresh"
+usage = "air env refresh"
+summary = "重新生成 bashrc 与 bash-env runtime。"
+handler = "env_cmd_refresh"
+
+[[commands]]
+name = "inject"
+usage = "air env inject <enable|disable|status> bash-env"
+summary = "管理非交互 Bash 注入入口。"
+handler = "env_cmd_inject"
+
+[[commands]]
+name = "analysis"
+usage = "air env analysis [--probe]"
+summary = "分析 env 当前状态；加 --probe 运行嵌套 shell 探测。"
+handler = "env_cmd_analysis"
+aliases = ["analyze"]

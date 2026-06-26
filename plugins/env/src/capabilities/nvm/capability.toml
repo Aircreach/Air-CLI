@@ -1,0 +1,35 @@
+schema = "air.resource/v1"
+id = "nvm"
+name = "nvm"
+kind = "builtin"
+risk = "medium"
+summary = "Exposes the default nvm Node.js version without making shell startup heavy."
+
+[targets.bashrc]
+loader = "targets/bashrc.bash"
+mode = "lazy"
+risk = "medium"
+summary = "Adds default Node bin to PATH and lazy-loads nvm on first nvm command."
+
+[targets.bash-env]
+loader = "targets/bash-env.bash"
+mode = "static"
+risk = "low"
+summary = "Adds default Node bin to non-interactive Bash PATH without sourcing nvm."
+
+[inputs.nvm_dir]
+type = "path"
+env = "NVM_DIR"
+default = "$HOME/.nvm"
+prompt = "nvm directory"
+required = true
+targets = ["bashrc", "bash-env"]
+validate = "dir"
+
+[inputs.node_version]
+type = "string"
+default = "default"
+prompt = "Node version for non-interactive Bash"
+required = false
+targets = ["bash-env"]
+validate = "nvm-node-version"

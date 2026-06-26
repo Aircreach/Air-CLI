@@ -1,0 +1,27 @@
+schema = "air.resource/v1"
+id = "pyenv"
+name = "pyenv"
+kind = "builtin"
+risk = "medium"
+summary = "Exposes pyenv shims and lazy-loads full pyenv shell integration."
+
+[targets.bashrc]
+loader = "targets/bashrc.bash"
+mode = "lazy"
+risk = "medium"
+summary = "Adds pyenv shims/bin to PATH and lazy-loads pyenv shell integration."
+
+[targets.bash-env]
+loader = "targets/bash-env.bash"
+mode = "static"
+risk = "low"
+summary = "Adds pyenv shims/bin to non-interactive Bash PATH."
+
+[inputs.pyenv_root]
+type = "path"
+env = "PYENV_ROOT"
+default = "$HOME/.pyenv"
+prompt = "pyenv root"
+required = true
+targets = ["bashrc", "bash-env"]
+validate = "dir"

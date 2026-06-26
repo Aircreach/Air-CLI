@@ -1,0 +1,81 @@
+schema = "air.ui.flow/v1"
+id = "helper-enable"
+title = "Enable Helper UI"
+summary = "Prepare the optional air-ui helper, preview it, then enable helper UI only after it is usable."
+layout = "wizard"
+layout.rail = "right"
+layout.log_height = 8
+layout.narrow = "stack"
+
+[[steps]]
+id = "context"
+type = "check"
+title = "Start safely"
+message = "Air will check the current terminal. This flow never runs during shell startup and writes state only at the final commit."
+action = "helper-enable-actions.sh:helper_flow_check_context"
+
+[[steps]]
+id = "helper_or_build"
+type = "check"
+title = "Find preparation paths"
+message = "Air checks for an existing helper and discovers safe ways to prepare one."
+action = "helper-enable-actions.sh:helper_flow_check_helper_or_build"
+
+[[steps]]
+id = "build_method"
+type = "select"
+title = "Choose path"
+message = "Pick how Air should make the helper available on this machine."
+select_style = "menu"
+options_action = "helper-enable-actions.sh:helper_flow_build_options"
+
+[[steps]]
+id = "build_plan"
+type = "preview"
+title = "Review impact"
+message = "Review commands, writes, and risk before anything changes."
+action = "helper-enable-actions.sh:helper_flow_show_build_plan"
+
+[[steps]]
+id = "build_confirm"
+type = "confirm"
+title = "Confirm action"
+message = "Continue with the selected preparation path?"
+default = "yes"
+risk = "medium"
+
+[[steps]]
+id = "build"
+type = "task"
+title = "Run preparation"
+message = "Run the selected build, download, or install task. Long output is treated as task output, not step navigation."
+action = "helper-enable-actions.sh:helper_flow_prepare_helper"
+
+[[steps]]
+id = "usable"
+type = "check"
+title = "Verify helper"
+message = "Confirm helper UI is usable for explicit Air CLI command output."
+action = "helper-enable-actions.sh:helper_flow_check_usable"
+
+[[steps]]
+id = "preview"
+type = "preview"
+title = "Preview result"
+message = "Preview the UI before writing helper mode."
+action = "helper-enable-actions.sh:helper_flow_preview"
+
+[[steps]]
+id = "confirm"
+type = "confirm"
+title = "Confirm enable"
+message = "Use helper UI for explicit Air CLI command output on this machine?"
+default = "yes"
+risk = "low"
+
+[[steps]]
+id = "commit"
+type = "commit"
+title = "Commit state"
+message = "Write AIR_UI_MODE='helper' to Air UI state."
+action = "helper-enable-actions.sh:helper_flow_commit"

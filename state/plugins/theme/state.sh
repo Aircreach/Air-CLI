@@ -1,0 +1,2 @@
+AIR_THEME_CURRENT=focus
+AIR_THEME_RENDERER=starship

@@ -1,0 +1,79 @@
+title = "air theme - 管理提示符主题"
+summary = "Manage terminal prompt themes and renderer integration."
+
+[[commands]]
+name = "list"
+usage = "air theme list"
+summary = "列出当前 renderer 可用主题。"
+handler = "theme_cmd_list"
+
+[[commands]]
+name = "current"
+usage = "air theme current"
+summary = "显示当前主题、renderer 和配置路径。"
+handler = "theme_cmd_current"
+
+[[commands]]
+name = "use"
+usage = "air theme use <theme>"
+summary = "只切换当前 shell 会话主题。"
+handler = "theme_cmd_use"
+
+[[commands]]
+name = "save"
+usage = "air theme save <theme>"
+summary = "保存为新终端默认主题。"
+handler = "theme_cmd_save"
+
+[[commands]]
+name = "renderer"
+usage = "air theme renderer <command>"
+summary = "管理 theme 使用的 renderer。"
+handler = "theme_cmd_renderer"
+
+[[groups]]
+name = "renderer"
+title = "air theme renderer - 管理 theme 渲染器"
+summary = "Manage theme renderer integrations."
+
+[[groups.commands]]
+group = "renderer"
+name = "list"
+usage = "air theme renderer list"
+summary = "列出可用 renderer。"
+handler = "theme_renderer_cmd_list"
+
+[[groups.commands]]
+group = "renderer"
+name = "current"
+usage = "air theme renderer current"
+summary = "显示当前 renderer。"
+handler = "theme_renderer_cmd_current"
+
+[[groups.commands]]
+group = "renderer"
+name = "use"
+usage = "air theme renderer use <renderer>"
+summary = "切换默认 renderer。"
+handler = "theme_renderer_cmd_use"
+
+[[groups.commands]]
+group = "renderer"
+name = "status"
+usage = "air theme renderer status"
+summary = "显示当前 renderer 状态。"
+handler = "theme_renderer_cmd_status"
+
+[[groups.commands]]
+group = "renderer"
+name = "install"
+usage = "air theme renderer install"
+summary = "安装当前 renderer。"
+handler = "theme_renderer_cmd_install"
+
+[[groups.commands]]
+group = "renderer"
+name = "update"
+usage = "air theme renderer update"
+summary = "更新当前 renderer。"
+handler = "theme_renderer_cmd_update"

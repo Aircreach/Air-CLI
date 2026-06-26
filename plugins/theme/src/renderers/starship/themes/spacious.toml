@@ -1,0 +1,29 @@
+add_newline = true
+scan_timeout = 100
+command_timeout = 500
+format = "${env_var.AIR_PROMPT_DIR}${env_var.AIR_PROMPT_SECONDARY}${env_var.AIR_PROMPT_FOLDED}\n$character"
+
+[env_var.AIR_PROMPT_DIR]
+variable = "AIR_PROMPT_DIR"
+style = "fg:#F8FAFC bg:#243B53 bold"
+format = "[](fg:#243B53)[  $env_value  ]($style)[](fg:#243B53) "
+
+[env_var.AIR_PROMPT_SECONDARY]
+variable = "AIR_PROMPT_SECONDARY"
+style = "fg:#071A1F bg:#3BE8B0 bold"
+format = "[](fg:#3BE8B0)[  $env_value  ]($style)[](fg:#3BE8B0) "
+
+[env_var.AIR_PROMPT_FOLDED]
+variable = "AIR_PROMPT_FOLDED"
+style = "fg:#FFF7ED bg:#6B7280 bold"
+format = "[](fg:#6B7280)[  $env_value  ]($style)[](fg:#6B7280) "
+
+[python]
+disabled = true
+
+[git_status]
+disabled = true
+
+[character]
+success_symbol = "[❯](bold fg:#3BE8B0)"
+error_symbol = "[❯](bold fg:#FF5C7A)"

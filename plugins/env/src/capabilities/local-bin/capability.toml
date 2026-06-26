@@ -1,0 +1,26 @@
+schema = "air.resource/v1"
+id = "local-bin"
+name = "Local Bin"
+kind = "builtin"
+risk = "low"
+summary = "Adds $HOME/.local/bin to PATH."
+
+[targets.bashrc]
+loader = "targets/bashrc.bash"
+mode = "static"
+risk = "low"
+summary = "Adds $HOME/.local/bin to interactive Bash PATH."
+
+[targets.bash-env]
+loader = "targets/bash-env.bash"
+mode = "static"
+risk = "low"
+summary = "Adds $HOME/.local/bin to non-interactive Bash PATH."
+
+[inputs.bin_dir]
+type = "path"
+default = "$HOME/.local/bin"
+prompt = "local bin directory"
+required = false
+targets = ["bashrc", "bash-env"]
+validate = "dir-optional"

@@ -1,0 +1,34 @@
+add_newline = false
+scan_timeout = 80
+command_timeout = 500
+format = "${env_var.AIR_PROMPT_DIR}${env_var.AIR_PROMPT_DENSE_VENV}${env_var.AIR_PROMPT_DENSE_PYTHON}${env_var.AIR_PROMPT_DENSE_GIT}$character"
+
+[env_var.AIR_PROMPT_DIR]
+variable = "AIR_PROMPT_DIR"
+style = "fg:#7DD3FC bold"
+format = "[$env_value]($style) "
+
+[env_var.AIR_PROMPT_DENSE_VENV]
+variable = "AIR_PROMPT_DENSE_VENV"
+style = "fg:#3BE8B0 bold"
+format = "[ $env_value]($style) "
+
+[env_var.AIR_PROMPT_DENSE_PYTHON]
+variable = "AIR_PROMPT_DENSE_PYTHON"
+style = "fg:#F6C85F"
+format = "[ $env_value]($style) "
+
+[env_var.AIR_PROMPT_DENSE_GIT]
+variable = "AIR_PROMPT_DENSE_GIT"
+style = "fg:#F97316"
+format = "[ $env_value]($style) "
+
+[python]
+disabled = true
+
+[git_status]
+disabled = true
+
+[character]
+success_symbol = "[❯](bold fg:#3BE8B0)"
+error_symbol = "[❯](bold fg:#FF5C7A)"

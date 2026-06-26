@@ -1,0 +1,40 @@
+schema = "air.plugin/v1"
+id = "theme"
+name = "Theme"
+version = "0.1.0"
+description = "Terminal prompt theming and renderer management plugin"
+command = "theme"
+
+[help]
+summary = "Manage terminal prompt themes and their renderer integration."
+
+[config]
+file = "settings.sh"
+
+[entry]
+commands = "src/commands.sh"
+runtime = "runtime.sh"
+lifecycle = "lifecycle.sh"
+settings = "settings.sh"
+
+[setup]
+risk = "medium"
+summary = "Prepare the managed Starship renderer required by the theme plugin."
+
+[runtime]
+default_renderer = "starship"
+
+[renderers]
+path = "src/renderers"
+
+[events]
+after_disable = [
+  "restore-venv-prompt"
+]
+
+[[runtime.renderers]]
+id = "starship"
+required = true
+managed = true
+install = "src/renderers/starship/renderer.sh install"
+update = "src/renderers/starship/renderer.sh update"

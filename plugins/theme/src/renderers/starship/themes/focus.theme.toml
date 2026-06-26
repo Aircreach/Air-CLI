@@ -1,0 +1,4 @@
+id = "focus"
+name = "focus"
+summary = "聚焦胶囊：目录 + 最重要上下文 + 折叠图标"
+config = "focus.toml"

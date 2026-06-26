@@ -1,0 +1,4 @@
+id = "dense"
+name = "dense"
+summary = "高密度：轻量图标文字，适合窄屏或大量输出"
+config = "dense.toml"

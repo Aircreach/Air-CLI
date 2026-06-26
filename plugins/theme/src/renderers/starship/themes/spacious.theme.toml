@@ -1,0 +1,4 @@
+id = "spacious"
+name = "spacious"
+summary = "舒展双行：信息行更厚，输入行独立"
+config = "spacious.toml"

@@ -1,0 +1,28 @@
+schema = "air.plugin/v1"
+id = "env"
+name = "Env"
+version = "0.1.0"
+description = "Shell capability environment manager"
+command = "env"
+
+[help]
+summary = "Manage shell environment capabilities."
+
+[config]
+file = "settings.sh"
+
+[entry]
+commands = "src/commands.sh"
+runtime = "runtime.sh"
+lifecycle = "lifecycle.sh"
+settings = "settings.sh"
+
+[setup]
+risk = "medium"
+summary = "Prepare env capability state without changing shell startup integration."
+
+[runtime]
+default_target = "bashrc"
+
+[capabilities]
+path = "src/capabilities"
