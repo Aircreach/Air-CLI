@@ -1,0 +1,44 @@
+# OS / editor noise
+.DS_Store
+Thumbs.db
+Desktop.ini
+.idea/
+.vscode/
+*.code-workspace
+*.swp
+*.swo
+*~
+*.orig
+*.rej
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+*.pid
+*.pid.lock
+
+# Common build artifacts and caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.venv/
+venv/
+node_modules/
+coverage/
+dist/
+build/
+out/
+target/
+*.cover
+*.test
+*.exe
+*.dll
+*.so
+
+# Air local marker files
+state/plugins/*/enabled
+state/plugins/*/setup
